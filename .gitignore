@@ -2,7 +2,8 @@
 approx_instantiations
 data_for_training
 final_template_assignments
-generators
+generators/*/*/*.qasm
+generators/*.pickle
 instantiations/*.pickle
 reinstantiations/*.pickle
 statistics/*.pickle
