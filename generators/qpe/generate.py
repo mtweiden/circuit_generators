@@ -33,17 +33,17 @@ class myThread(threading.Thread):
         qiskit_circ : QuantumCircuit = PhaseEstimation(num_q, random_unitary)
         qiskit_circ = transpile(qiskit_circ, basis_gates=['u3','cx'])
 
-        with open(f'temp_qasm/{num_q * 2}.qasm', 'w') as f:
+        with open(f'qasm/qpe_{num_q * 2}.qasm', 'w') as f:
             f.write(qiskit_circ.qasm())
-        circuit : Circuit = Circuit.from_file(f'temp_qasm/{num_q * 2}.qasm')
+        circuit : Circuit = Circuit.from_file(f'qasm/qpe_{num_q * 2}.qasm')
         return circuit
 
 
 if __name__ == '__main__':
     range_low = 3
     range_high = 9
-    step = 5
-    num_qubits = [x for x in range(range_low, range_high+1)]
+    step = 1
+    num_qubits = [x for x in range(range_low, range_high+1, step)]
 
     threads = [myThread(i) for i in num_qubits]
 

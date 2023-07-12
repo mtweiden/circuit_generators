@@ -59,7 +59,7 @@ class myThread(threading.Thread):
         qiskit_circ = transpile(qiskit_circ, basis_gates=['u3','cx'])
         num_q = qiskit_circ.num_qubits
 
-        with open(f'temp_qasm/{num_q}.qasm', 'w') as f:
+        with open(f'qasm/qae_{num_q}.qasm', 'w') as f:
             f.write(qiskit_circ.qasm())
         # circuit : Circuit = Circuit.from_file(f'temp_qasm/{num_q * 2}.qasm')
         return qiskit_circ
@@ -73,8 +73,8 @@ if __name__ == '__main__':
     https://arxiv.org/pdf/1806.06893.pdf
     '''
 
-    range_low = 10
-    range_high = 100
+    range_low = 4
+    range_high = 20
     step = 2
     p = 0.3
     num_qubits = [x for x in range(range_low, range_high+1, step)]

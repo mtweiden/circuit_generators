@@ -1,6 +1,6 @@
 from qiskit import QuantumCircuit
-from qiskit.algorithms.linear_solvers.numpy_linear_solver import NumPyLinearSolver
-from qiskit.algorithms.linear_solvers.hhl import HHL
+# from qiskit.algorithms.linear_solvers.numpy_linear_solver import NumPyLinearSolver
+from qiskit.algorithms 
 import numpy as np
 from qiskit.compiler.transpiler import transpile
 from bqskit import Circuit
@@ -22,12 +22,12 @@ class myThread(threading.Thread):
         if (type(qiskit_circ) is QuantumCircuit):
             qiskit_circ = transpile(qiskit_circ, basis_gates=['u3','cx'])
             num_q = qiskit_circ.num_qubits
-            with open(f'temp_qasm_hhl/{num_q}.qasm', 'w') as f:
+            with open(f'qasm/hhl_{num_q}.qasm', 'w') as f:
                 f.write(qiskit_circ.qasm())
             # circuit : Circuit = Circuit.from_file(f'temp_qasm/{num_q * 2}.qasm')
             return qiskit_circ
         else:
-            with open(f'temp_qasm_hhl/{num_q}.unitary', 'w') as f:
+            with open(f'qasm/hhl_{num_q}.unitary', 'w') as f:
                 pickle.dump(qiskit_circ, f)
 
 

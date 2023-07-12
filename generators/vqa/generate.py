@@ -84,7 +84,7 @@ class myThread(threading.Thread):
         circ = create_vqe(self.atom)[0]
         self.i = circ.num_qubits
         quantum_circuit = transpile(circ, basis_gates=['u3','cx'])
-        with open(f'temp_qasm/vqe_{self.id}_{self.i}.qasm', 'w') as f:
+        with open(f'qasm/vqe_{self.id}_{self.i}.qasm', 'w') as f:
             f.write(quantum_circuit.qasm())
         return quantum_circuit
 

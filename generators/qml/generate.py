@@ -6,6 +6,7 @@ from qiskit.compiler.transpiler import transpile
 from bqskit import Circuit
 import pickle
 import threading
+from qiskit.transpiler.passes import RemoveBarriers
 
 # def random_two_local(num_qubits, reps = 1):
 #     qc = QuantumCircuit(num_qubits)
@@ -77,18 +78,22 @@ class myThread(threading.Thread):
         num_q = self.num_q
         print(num_q)
         quantum_circuit = create_ml_circuit(self.num_q, int(np.sqrt(self.num_q)))
+        quantum_circuit = RemoveBarriers()(quantum_circuit)
         self.i = quantum_circuit.num_qubits
-        quantum_circuit = transpile(quantum_circuit, basis_gates=['u3','cx'])
-        with open(f'temp_qasm/{self.i}.qasm', 'w') as f:
+
+        with open(f'qasm/qml_{self.i}.qasm', 'w') as f:
             f.write(quantum_circuit.qasm())
         # circuit : Circuit = Circuit.from_file(f'temp_qasm/{i}.qasm')
+        print(quantum_circuit.depth())
+        print(quantum_circuit.count_ops())
+
         return quantum_circuit
 
 
 if __name__ == '__main__':
     range_low = 2
-    range_high = 24
-    step_size = 2
+    range_high = 10
+    step_size = 1
     num_qubits = [x for x in range(range_low, range_high+1, step_size)]
 
     threads = [myThread(i) for i in num_qubits]

@@ -6,6 +6,7 @@ from bqskit.ir.gates.parameterized.ccp import CCPGate
 from bqskit.ir.gates.constant.cx import CNOTGate
 from bqskit.ir.gates.constant.x import XGate
 from bqskit.ir.gates.constant.ccx import ToffoliGate
+from bqskit.ir.lang.qasm2 import OPENQASM2Language
 import numpy as np
 from os.path import exists
 from qiskit.circuit.library.basis_change.qft import QFT
@@ -70,7 +71,7 @@ def subcircuit_ccadd_x(x : int, n : int, inverse : bool = False) -> Circuit:
 
 # QFT 
 def subcircuit_qft(n : int, inverse = False) -> Circuit:
-    qasm_file_name = f'temp_qasm/'
+    qasm_file_name = f'qasm/'
     qasm_file_name += f'qft_{n}.qasm' if not inverse else f'iqft_{n}.qasm'
     if not exists(qasm_file_name):
         qiskit_circ = QFT(num_qubits=n, inverse=inverse)
@@ -254,6 +255,11 @@ if __name__ == '__main__':
         print(f'Generating circuit {i+1}/{len(arguments)}...')
         circ = modular_exponentiation(*args)
         circ.unfold_all()
+        num_q = circ.num_qudits
+        with open(f'qasm/shor_{num_q}.qasm', 'w') as f:
+            f.write(OPENQASM2Language().encode(circuit=circ))
+        with open(f'pickle/shor_{num_q}.pkl', 'wb') as pf:
+            pickle.dump(circ, pf)
         circuits.append(circ)
 
     min_size = circuits[0].num_qudits
